@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Jadwal Keagamaan OSIS</title>
+
+    <link class="favicon" rel="icon" type="image/png" href="https://s6.imgcdn.dev/YXOXNo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        /* --- ANIMASI SPLASH SCREEN --- */
+        #splashScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #ffffff; display: flex; justify-content: center; align-items: center; z-index: 9999; cursor: pointer; user-select: none; }
+        .fade-in-up-logo { animation: fadeInUp 2s ease-in-out forwards; }
+        @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+        .fade-out-splash { animation: fadeOut 1.5s ease-in-out forwards; pointer-events: none; }
+        @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* --- STYLING ASLI EXCEL (DIPERBAIKI UNTUK CENTER & AUTO-RESIZE) --- */
+        table { border: 0; border-collapse: collapse; border-spacing: 0; table-layout: auto; min-width: 801pt; width: 100%; }
+        a { color: blue; } a:visited { color: purple; }
+        tr, col, br, ruby { ruby-align: start; }
+        
+        td { 
+            text-align: center !important; 
+            vertical-align: middle !important; 
+            white-space: nowrap !important; 
+            background: auto; color: #000000; font-size: 11pt; font-weight: 400; font-style: normal; font-family: 'Aptos Narrow', sans-serif; 
+            padding: 4px !important; 
+        }
+        
+        .x39 { text-align: left !important; vertical-align: top !important; white-space: normal !important; word-wrap: break-word; border-top: 1px solid #505050; border-left: 1px solid #505050; padding: 8px !important; }
+
+        .x21 { border-top: 1px solid #000000; border-right: none; border-bottom: none; border-left: 1px solid #000000; }
+        .x22 { border-top: 1px solid #000000; border-right: none; border-bottom: none; border-left: none; }
+        .x23 { border-top: 1px solid #000000; border-right: 1px solid #000000; border-bottom: none; border-left: none; }
+        .x24 { border-top: none; border-right: none; border-bottom: none; border-left: 1px solid #505050; }
+        .x26 { background: #548135; color: #FFFFFF; font-size: 17pt; font-weight: 700; border-left: 1px solid #505050; }
+        .x27, .x28 { border-right: 1px solid #505050; }
+        .x29 { border-left: 1px solid #505050; }
+        .x30 { border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x31 { border-bottom: 1px solid #505050; }
+        .x32 { border-right: 1px solid #505050; border-bottom: 1px solid #505050; }
+        .x33 { background: #4EA72E; color: #FFFFFF; font-size: 13pt; font-weight: 700; border-top: 1px solid #505050; border-left: 1px solid #505050; }
+        .x34 { border-top: 1px solid #505050; }
+        .x35 { border-top: 1px solid #505050; border-right: 1px solid #505050; }
+        .x36 { background: #FF0000; color: #FFFFFF; font-size: 16pt; font-weight: 700; border-top: 1px solid #505050; border-left: 1px solid #505050; }
+        .x37 { background: #FFC000; border: 1px solid #505050; font-weight: bold; }
+        .x38 { background: #44546A; color: #FFFFFF; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-right: 1px solid #505050; border-left: 1px solid #505050; }
+        .x40 { background: #00B0F0; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; font-weight: bold; }
+        .x41 { border-top: 1px solid #505050; border-bottom: 1px solid #505050; }
+        .x42 { border-top: 1px solid #505050; border-right: 1px solid #505050; border-bottom: 1px solid #505050; }
+        .x43 { background: #305496; color: #FFFFFF; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x44, .x45 { background: #BFBFBF; border: 1px solid #505050; }
+        .x46 { background: #C00000; color: #FFFFFF !important; font-weight: 700; font-family: Calibri, sans-serif; border: 1px solid #505050; } 
+        .x47, .x48 { background: #A8D08D; border: 1px solid #505050; }
+        .x49 { background: #FFFFFF; border: 1px solid #505050; }
+        .x50, .x51 { background: #9CC2E5; border: 1px solid #505050; }
+        .x52 { background: #FFC000; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x53 { background: #D86DCD; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; font-weight: bold;}
+        .x54 { background: #C6A3E1; border: 1px solid #505050; }
+        .x55 { background: #92D050; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x56, .x57 { background: #F4B083; border: 1px solid #505050; }
+        .x58 { background: #00B0F0; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x59 { background: #70AD47; font-size: 13pt; font-weight: 700; border-top: 1px solid #505050; border-right: 1px solid #505050; border-left: 1px solid #505050; }
+        .x60 { font-weight: 700; border: 1px solid #505050; background: #E2EFDA; }
+        .x61 { font-family: Calibri, sans-serif; border: 1px solid #505050; }
+        .x62 { border-right: 1px solid #505050; border-left: 1px solid #505050; }
+        .x63, .x65, .x66 { border: 1px solid #505050; }
+        .x64 { background: #FFFF00; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x67 { background: #7030A0; color: #FFFFFF; font-weight: 700; font-family: Calibri, sans-serif; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x68 { background: #4EA72E; font-weight: 700; border-top: 1px solid #505050; border-bottom: 1px solid #505050; border-left: 1px solid #505050; }
+        .x69 { border-top: 1px solid #505050; border-right: 1px solid #505050; border-bottom: 1px solid #000000; border-left: 1px solid #505050; }
+        .x70 { border-left: 1px solid #000000; }
+        .x71 { border-right: 1px solid #000000; }
+        .x72 { border-left: 1px solid #000000; }
+        .x74 { border-bottom: 1px solid #000000; border-left: 1px solid #000000; }
+
+        .cell-nama-target { text-align: center !important; vertical-align: middle !important; white-space: nowrap !important; }
+        .disabled-cell { background-color: #E2E8F0 !important; color: #94A3B8 !important; }
+        .editable-mode { outline: 2px dashed #4F46E5 !important; background-color: #FFFBEB !important; cursor: text; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans pb-24">
+
+    <div id="splashScreen" onclick="triggerFadeOut()">
+        <img src="https://s6.imgcdn.dev/YXOXNo.jpg" alt="Logo" class="fade-in-up-logo max-w-xs sm:max-w-sm h-auto">
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <h1 class="text-3xl font-extrabold text-center mb-6 text-indigo-900">Dashboard Jadwal Keagamaan OSIS</h1>
+
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8 grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Cowo 1 (Kls 9)</label><textarea id="inputCowo9" rows="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-xs" placeholder="Cowo kls 9..."></textarea></div>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Cewe 1 (Kls 9)</label><textarea id="inputCewe9" rows="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-pink-500 text-xs" placeholder="Cewe kls 9..."></textarea></div>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Cowo 2 (Kls 7/8)</label><textarea id="inputCowo78" rows="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 text-xs" placeholder="Cowo kls 7/8..."></textarea></div>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Cewe 2 (Kls 7/8)</label><textarea id="inputCewe78" rows="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-pink-500 text-xs" placeholder="Cewe kls 7/8..."></textarea></div>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Daftar Tadarus</label><textarea id="inputTadarus" rows="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 text-xs" placeholder="Petugas tadarus..."></textarea></div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Pengaturan Parameter Jadwal</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-4 mb-6">
+                <div><label class="block text-xs font-bold uppercase text-gray-500">Tanggal Senin</label><input type="number" id="paramT1" value="1" class="w-full p-2 border rounded-md text-sm"></div>
+                <div><label class="block text-xs font-bold uppercase text-gray-500">Bulan Senin</label><select id="paramB1" class="w-full p-2 border rounded-md text-sm"></select></div>
+                <div><label class="block text-xs font-bold uppercase text-gray-500">Tanggal Jumat</label><input type="number" id="paramT2" value="5" class="w-full p-2 border rounded-md text-sm"></div>
+                <div><label class="block text-xs font-bold uppercase text-gray-500">Bulan Jumat</label><select id="paramB2" class="w-full p-2 border rounded-md text-sm"></select></div>
+                <div><label class="block text-xs font-bold uppercase text-gray-500">Kapasitas Jaga Global</label><input type="number" id="kuotaJaga" value="4" min="1" max="4" class="w-full p-2 border rounded-md text-sm"></div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-xl shadow-md mb-8">
+            <h3 class="text-lg font-bold text-gray-800 mb-6 border-b pb-2">Pengaturan Spesifik (Tikfal, Jumal, Shaum Sunnah)</h3>
+            <div class="space-y-6">
+                
+                <div class="bg-slate-50 border rounded-lg p-4">
+                    <h4 class="font-bold text-indigo-900 border-b pb-2 mb-3">Pengaturan PJ Tikfal (Kelas 9)</h4>
+                    <p class="text-xs text-gray-500 mb-3">Pilih gender untuk PJ harian. Slot lawan jenis otomatis dikosongkan pada hari tersebut.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 text-sm">
+                        <div><label class="block font-bold text-gray-600">Senin</label><select id="pjTikfalSenin" class="w-full p-1.5 border rounded"><option value="">- Pilih -</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Selasa</label><select id="pjTikfalSelasa" class="w-full p-1.5 border rounded"><option value="">- Pilih -</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Rabu</label><select id="pjTikfalRabu" class="w-full p-1.5 border rounded"><option value="">- Pilih -</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Kamis</label><select id="pjTikfalKamis" class="w-full p-1.5 border rounded"><option value="">- Pilih -</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Jumat</label><select id="pjTikfalJumat" class="w-full p-1.5 border rounded"><option value="">- Pilih -</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border rounded-lg p-4">
+                    <div class="flex flex-wrap justify-between items-center border-b pb-2 mb-3">
+                        <h4 class="font-bold text-indigo-900">Alokasi Jumal (Jumat Amal)</h4>
+                        <button onclick="bukaModalJumal()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded-lg text-sm font-bold shadow-md">🎲 Acak & Pilih Pasangan</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                        <div><label class="block font-bold text-gray-600">Kelas 9 (JM1 & JM4)</label><select id="jumalK9" class="w-full p-1.5 border rounded"><option value="auto">Auto Generate (Smart)</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Kelas 8 (JM2 & JM5)</label><select id="jumalK8" class="w-full p-1.5 border rounded"><option value="auto">Auto Generate (Smart)</option></select></div>
+                        <div><label class="block font-bold text-gray-600">Kelas 7 (JM3 & JM6)</label><select id="jumalK7" class="w-full p-1.5 border rounded"><option value="auto">Auto Generate (Smart)</option></select></div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-3 justify-between border-t pt-4">
+                    <div class="flex gap-2">
+                        <button onclick="exportTabelKePNG()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition shadow-md">📷 Export PNG</button>
+                        <button id="btnEditManual" onclick="toggleEditJadwalManual()" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md">✏️ Edit Manual</button>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="openAdvancedTools()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-lg text-sm font-bold transition">🛠️ Tools</button>
+                        <button onclick="resetJadwal()" class="bg-slate-500 hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-bold transition">Reset</button>
+                        <button onclick="prosesSistemPintar()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-bold transition shadow-md">⚡ Jalankan Pemilihan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXCEL PREVIEW TABEL -->
+        <div class="bg-white p-4 rounded-xl shadow-md overflow-x-auto border flex justify-center mb-8">
+            <div id="areaExportTabel" class="p-4 bg-white inline-block">
+                <table>
+                    <col style='width:45pt'><col style='width:57.75pt'><col style='width:48pt'><col style='width:54pt'><col style='width:50.25pt'><col style='width:51.75pt'><col span='11' style='width:45pt'>
+                    
+                    <tr style='height:60pt;'>
+                        <td colspan='17'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td>
+                        <td colspan='16' class='x21' style='border-right:1px solid #000000;'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td>
+                        <td colspan='3' class='x24'></td>
+                        <td colspan='8' rowspan='3' class='x26' id="judulTabel" style='border-right:1px solid #505050;border-bottom:1px solid #505050;height:45pt;'>JADWAL PETUGAS KEAGAMAAN</td>
+                        <td colspan='5' class='x25' style='border-right:1px solid #505050;'></td>
+                    </tr>
+                    <tr style='height:15pt'><td></td><td colspan='3' class='x24'></td><td colspan='5' class='x25' style='border-right:1px solid #505050;'></td></tr>
+                    <tr style='height:15pt'><td></td><td colspan='3' class='x24'></td><td colspan='5' class='x25' style='border-right:1px solid #505050;'></td></tr>
+                    <tr style='height:15pt'><td></td><td colspan='16' class='x24' style='border-right:1px solid #505050;'></td></tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td colspan='5' rowspan='2' class='x33' style='border-right:1px solid #505050;border-bottom:1px solid #505050;height:29.25pt;'>TIKET HAFALAN</td>
+                        <td class='x25'></td>
+                        <td colspan='8' rowspan='2' class='x36' style='border-right:1px solid #505050;border-bottom:1px solid #505050;height:29.25pt;'>JADWAL ASKAR</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'><td></td><td class='x24'></td><td class='x25'></td><td class='x28'></td></tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x37' id="hdr-col-0">Senin</td><td class='x37' id="hdr-col-1">Selasa</td><td class='x37' id="hdr-col-2">Rabu</td><td class='x37' id="hdr-col-3">Kamis</td><td class='x37' id="hdr-col-4">Jumat</td>
+                        <td class='x25'></td>
+                        <td class='x38' id="hdr-ask-0">Senin</td><td class='x38' id="hdr-ask-1">Selasa</td><td class='x38' id="hdr-ask-2">Rabu</td><td class='x38' id="hdr-ask-3">Kamis</td><td class='x38' id="hdr-ask-4">Jumat</td>
+                        <td colspan='3' rowspan='25' class='x39' style='border-right:1px solid #505050;border-bottom:1px solid #505050;height:386.25pt;'>
+                            <b>NOTE :</b><br><br>Petugas keluar kelas 5 menit sebelum bell dan langsung menempati tempat tugas masing2,<br><br>Untuk pj setelah keluar kelas langsung ke aula dan ban tangan ada di lemari belakang untuk perempuan, untuk nama yang ditandai dengan warna Merah menjadi PJ.
+                        </td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td colspan='5' class='x40' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>Laki-laki</td>
+                        <td class='x25'></td>
+                        <td colspan='5' class='x43' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>JAGA DALAM</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x44 cell-nama-target' id="t-PT1">PT1</td><td class='x44 cell-nama-target' id="t-PT2">PT2</td><td class='x44 cell-nama-target' id="t-PT3">PT3</td><td class='x44 cell-nama-target' id="t-PT4">PT4</td><td class='x45 cell-nama-target' id="t-PT5">PT5</td>
+                        <td class='x25'></td>
+                        <td class='x46 cell-nama-target' id="t-PJ1">PJ1</td><td class='x46 cell-nama-target' id="t-PJ2">PJ2</td><td class='x46 cell-nama-target' id="t-PJ3">PJ3</td><td class='x46 cell-nama-target' id="t-PJ4">PJ4</td><td class='x46 cell-nama-target' id="t-PJ5">PJ5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x47 cell-nama-target' id="t-TF1">TF1</td><td class='x47 cell-nama-target' id="t-TF2">TF2</td><td class='x47 cell-nama-target' id="t-TF3">TF3</td><td class='x47 cell-nama-target' id="t-TF4">TF4</td><td class='x48 cell-nama-target' id="t-TF5">TF5</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JD1">JD1</td><td class='x49 cell-nama-target' id="t-JD2">JD2</td><td class='x49 cell-nama-target' id="t-JD3">JD3</td><td class='x49 cell-nama-target' id="t-JD4">JD4</td><td class='x49 cell-nama-target' id="t-JD5">JD5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x47 cell-nama-target' id="t-TF1-1">TF1-1</td><td class='x47 cell-nama-target' id="t-TF2-1">TF2-1</td><td class='x47 cell-nama-target' id="t-TF3-1">TF3-1</td><td class='x47 cell-nama-target' id="t-TF4-1">TF4-1</td><td class='x47 cell-nama-target' id="t-TF5-1">TF5-1</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JD1-1">JD1-1</td><td class='x49 cell-nama-target' id="t-JD2-1">JD2-1</td><td class='x49 cell-nama-target' id="t-JD3-1">JD3-1</td><td class='x49 cell-nama-target' id="t-JD4-1">JD4-1</td><td class='x49 cell-nama-target' id="t-JD5-1">JD5-1</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x50 cell-nama-target' id="t-TF1-2">TF1-2</td><td class='x50 cell-nama-target' id="t-TF2-2">TF2-2</td><td class='x50 cell-nama-target' id="t-TF3-2">TF3-2</td><td class='x50 cell-nama-target' id="t-TF4-2">TF4-2</td><td class='x50 cell-nama-target' id="t-TF5-2">TF5-2</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JD1-2">JD1-2</td><td class='x49 cell-nama-target' id="t-JD2-2">JD2-2</td><td class='x49 cell-nama-target' id="t-JD3-2">JD3-2</td><td class='x49 cell-nama-target' id="t-JD4-2">JD4-2</td><td class='x49 cell-nama-target' id="t-JD5-2">JD5-2</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x51 cell-nama-target' id="t-TF1-3">TF1-3</td><td class='x51 cell-nama-target' id="t-TF2-3">TF2-3</td><td class='x51 cell-nama-target' id="t-TF3-3">TF3-3</td><td class='x51 cell-nama-target' id="t-TF4-3">TF4-3</td><td class='x51 cell-nama-target' id="t-TF5-3">TF5-3</td>
+                        <td class='x25'></td>
+                        <td colspan='5' class='x52' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>JAGA LUAR</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x50 cell-nama-target' id="t-TF1-4">TF1-4</td><td class='x50 cell-nama-target' id="t-TF2-4">TF2-4</td><td class='x50 cell-nama-target' id="t-TF3-4">TF3-4</td><td class='x50 cell-nama-target' id="t-TF4-4">TF4-4</td><td class='x50 cell-nama-target' id="t-TF5-4">TF5-4</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JL1">JL1</td><td class='x49 cell-nama-target' id="t-JL2">JL2</td><td class='x49 cell-nama-target' id="t-JL3">JL3</td><td class='x49 cell-nama-target' id="t-JL4">JL4</td><td class='x49 cell-nama-target' id="t-JL5">JL5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15pt'>
+                        <td></td><td class='x24'></td>
+                        <td colspan='5' class='x53' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>Perempuan</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JL1-1">JL1-1</td><td class='x49 cell-nama-target' id="t-JL2-1">JL2-1</td><td class='x49 cell-nama-target' id="t-JL3-1">JL3-1</td><td class='x49 cell-nama-target' id="t-JL4-1">JL4-1</td><td class='x49 cell-nama-target' id="t-JL5-1">JL5-1</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x45 cell-nama-target' id="t-PT6">PT6</td><td class='x45 cell-nama-target' id="t-PT7">PT7</td><td class='x45 cell-nama-target' id="t-PT8">PT8</td><td class='x45 cell-nama-target' id="t-PT9">PT9</td><td class='x45 cell-nama-target' id="t-PT10">PT10</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JL1-2">JL1-2</td><td class='x49 cell-nama-target' id="t-JL2-2">JL2-2</td><td class='x49 cell-nama-target' id="t-JL3-2">JL3-2</td><td class='x49 cell-nama-target' id="t-JL4-2">JL4-2</td><td class='x49 cell-nama-target' id="t-JL5-2">JL5-2</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x54 cell-nama-target' id="t-TF1-5">TF1-5</td><td class='x54 cell-nama-target' id="t-TF2-5">TF2-5</td><td class='x54 cell-nama-target' id="t-TF3-5">TF3-5</td><td class='x54 cell-nama-target' id="t-TF4-5">TF4-5</td><td class='x54 cell-nama-target' id="t-TF5-5">TF5-5</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-JL1-3">JL1-3</td><td class='x49 cell-nama-target' id="t-JL2-3">JL2-3</td><td class='x49 cell-nama-target' id="t-JL3-3">JL3-3</td><td class='x49 cell-nama-target' id="t-JL4-3">JL4-3</td><td class='x49 cell-nama-target' id="t-JL5-3">JL5-3</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x54 cell-nama-target' id="t-TF1-6">TF1-6</td><td class='x54 cell-nama-target' id="t-TF2-6">TF2-6</td><td class='x54 cell-nama-target' id="t-TF3-6">TF3-6</td><td class='x54 cell-nama-target' id="t-TF4-6">TF4-6</td><td class='x54 cell-nama-target' id="t-TF5-6">TF5-6</td>
+                        <td class='x25'></td>
+                        <td colspan='5' class='x55' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>TEMPAT WUDHU</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x56 cell-nama-target' id="t-TF1-7">TF1-7</td><td class='x56 cell-nama-target' id="t-TF2-7">TF2-7</td><td class='x56 cell-nama-target' id="t-TF3-7">TF3-7</td><td class='x56 cell-nama-target' id="t-TF4-7">TF4-7</td><td class='x57 cell-nama-target' id="t-TF5-7">TF5-7</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-TW1">TW1</td><td class='x49 cell-nama-target' id="t-TW2">TW2</td><td class='x49 cell-nama-target' id="t-TW3">TW3</td><td class='x49 cell-nama-target' id="t-TW4">TW4</td><td class='x49 cell-nama-target' id="t-TW5">TW5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x56 cell-nama-target' id="t-TF1-8">TF1-8</td><td class='x56 cell-nama-target' id="t-TF2-8">TF2-8</td><td class='x56 cell-nama-target' id="t-TF3-8">TF3-8</td><td class='x56 cell-nama-target' id="t-TF4-8">TF4-8</td><td class='x57 cell-nama-target' id="t-TF5-8">TF5-8</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-TW1-1">TW1-1</td><td class='x49 cell-nama-target' id="t-TW2-1">TW2-1</td><td class='x49 cell-nama-target' id="t-TW3-1">TW3-1</td><td class='x49 cell-nama-target' id="t-TW4-1">TW4-1</td><td class='x49 cell-nama-target' id="t-TW5-1">TW5-1</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x57 cell-nama-target' id="t-TF1-9">TF1-9</td><td class='x57 cell-nama-target' id="t-TF2-9">TF2-9</td><td class='x57 cell-nama-target' id="t-TF3-9">TF3-9</td><td class='x57 cell-nama-target' id="t-TF4-9">TF4-9</td><td class='x57 cell-nama-target' id="t-TF5-9">TF5-9</td>
+                        <td class='x25'></td>
+                        <td class='x49 cell-nama-target' id="t-TW1-2">TW1-2</td><td class='x49 cell-nama-target' id="t-TW2-2">TW2-2</td><td class='x49 cell-nama-target' id="t-TW3-2">TW3-2</td><td class='x49 cell-nama-target' id="t-TW4-2">TW4-2</td><td class='x49 cell-nama-target' id="t-TW5-2">TW5-2</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td colspan='7' class='x24'></td>
+                        <td class='x49 cell-nama-target' id="t-TW1-3">TW1-3</td><td class='x49 cell-nama-target' id="t-TW2-3">TW2-3</td><td class='x49 cell-nama-target' id="t-TW3-3">TW3-3</td><td class='x49 cell-nama-target' id="t-TW4-3">TW4-3</td><td class='x49 cell-nama-target' id="t-TW5-3">TW5-3</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td colspan='7' class='x24'></td>
+                        <td colspan='5' class='x58' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>TADARUS</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td rowspan='3' class='x59' style='border-bottom:1px solid #505050;height:46.5pt;'>JUMAL</td>
+                        <td class='x60'>Kelas 9</td><td class='x60'>Kelas 8</td><td class='x60'>Kelas 7</td>
+                        <td colspan='2' class='x25'></td>
+                        <td class='x61 cell-nama-target' id="t-TD1">TD1</td><td class='x61 cell-nama-target' id="t-TD2">TD2</td><td class='x61 cell-nama-target' id="t-TD3">TD3</td><td class='x61 cell-nama-target' id="t-TD4">TD4</td><td class='x61 cell-nama-target' id="t-TD5">TD5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x63 cell-nama-target' id="t-JM1">JM1</td><td class='x63 cell-nama-target' id="t-JM2">JM2</td><td class='x63 cell-nama-target' id="t-JM3">JM3</td>
+                        <td colspan='2' class='x25'></td>
+                        <td colspan='5' class='x64' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>ANNOUNCEMENT</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x63 cell-nama-target' id="t-JM4">JM4</td><td class='x63 cell-nama-target' id="t-JM5">JM5</td><td class='x63 cell-nama-target' id="t-JM6">JM6</td>
+                        <td colspan='2' class='x25'></td>
+                        <td class='x66 cell-nama-target' id="t-A1">A1</td><td class='x66 cell-nama-target' id="t-A2">A2</td><td class='x66 cell-nama-target' id="t-A3">A3</td><td class='x66 cell-nama-target' id="t-A4">A4</td><td class='x66 cell-nama-target' id="t-A5">A5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td colspan='7' class='x24'></td>
+                        <td colspan='5' class='x67' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>PATROLI</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td colspan='3' class='x68' style='border-right:1px solid #505050;border-bottom:1px solid #505050;'>SHAUM SUNNAH</td>
+                        <td colspan='3' class='x25'></td>
+                        <td class='x66 cell-nama-target' id="t-P1">P1</td><td class='x66 cell-nama-target' id="t-P2">P2</td><td class='x66 cell-nama-target' id="t-P3">P3</td><td class='x66 cell-nama-target' id="t-P4">P4</td><td class='x66 cell-nama-target' id="t-P5">P5</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x37'>Senin</td><td class='x63 cell-nama-target' id="t-SS1">SS1</td><td class='x63 cell-nama-target' id="t-SS2">SS2</td>
+                        <td colspan='3' class='x25'></td>
+                        <td class='x66 cell-nama-target' id="t-P1-1">P1-1</td><td class='x66 cell-nama-target' id="t-P2-1">P2-1</td><td class='x66 cell-nama-target' id="t-P3-1">P3-1</td><td class='x66 cell-nama-target' id="t-P4-1">P4-1</td><td class='x66 cell-nama-target' id="t-P5-1">P5-1</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td class='x24'></td>
+                        <td class='x37'>Kamis</td><td class='x63 cell-nama-target' id="t-SS3">SS3</td><td class='x63 cell-nama-target' id="t-SS4">SS4</td>
+                        <td colspan='3' class='x25'></td>
+                        <td class='x66 cell-nama-target' id="t-P1-2">P1-2</td><td class='x66 cell-nama-target' id="t-P2-2">P2-2</td><td class='x66 cell-nama-target' id="t-P3-2">P3-2</td><td class='x66 cell-nama-target' id="t-P4-2">P4-2</td><td class='x66 cell-nama-target' id="t-P5-2">P5-2</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'>
+                        <td></td><td colspan='7' class='x24'></td>
+                        <td class='x69 cell-nama-target' id="t-P1-3">P1-3</td><td class='x69 cell-nama-target' id="t-P2-3">P2-3</td><td class='x69 cell-nama-target' id="t-P3-3">P3-3</td><td class='x69 cell-nama-target' id="t-P4-3">P4-3</td><td class='x69 cell-nama-target' id="t-P5-3">P5-3</td>
+                        <td class='x28'></td>
+                    </tr>
+                    <tr style='height:15.75pt'><td></td><td colspan='16' class='x70' style='border-right:1px solid #000000;'></td></tr>
+                    <tr style='height:15.75pt'><td></td><td colspan='16' class='x72' style='border-right:1px solid #000000;'></td></tr>
+                    <tr style='height:15.75pt'><td></td><td colspan='16' class='x74' style='border-right:1px solid #000000;'></td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL JUMAL -->
+    <div id="modalJumal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 relative">
+            <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">🎲 Ada Pasangan Yang Mau Di Keep Ga?</h3>
+            <p class="text-xs text-center text-gray-500 mb-6">Klik kotak pasangan untuk menandai "Keep" (biru). Pasangan yang di-keep tidak akan berubah saat tombol acak ulang ditekan.</p>
+            <div id="jumalGrid" class="grid grid-cols-2 gap-4 mb-6"></div>
+            <div class="flex justify-between border-t pt-4">
+                <button onclick="acakUlangJumal()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition">🔄 Acak Ulang</button>
+                <button onclick="simpanPasanganJumal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition">💾 Simpan & Gunakan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS ADVANCED TOOLS -->
+    <div id="advMainModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 relative">
+            <button onclick="closeAdvancedTools()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button>
+            <h3 class="text-xl font-bold text-indigo-900 mb-4 border-b pb-2 text-center">🛠️ Menu Advanced Tools</h3>
+            <div class="flex flex-col gap-3">
+                <button onclick="openSubModal('hari')" class="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-lg">Pengaturan Hari Aktif</button>
+                <button onclick="openSubModal('jd')" class="w-full bg-slate-700 text-white font-semibold py-2.5 rounded-lg">Pengaturan Jaga Dalam (JD)</button>
+                <button onclick="openSubModal('jl')" class="w-full bg-amber-600 text-white font-semibold py-2.5 rounded-lg">Pengaturan Jaga Luar (JL)</button>
+                <button onclick="openSubModal('tw')" class="w-full bg-teal-600 text-white font-semibold py-2.5 rounded-lg">Pengaturan Tempat Wudhu (TW)</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="advSubModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 relative flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center border-b pb-2 mb-4">
+                <h4 id="advSubTitle" class="text-lg font-bold text-gray-900">Sub Menu</h4>
+                <button onclick="saveSubModal()" class="bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded">SAVE CONFIG</button>
+            </div>
+            <div id="advSubContent" class="overflow-y-auto flex-1 p-1"></div>
+            <div class="mt-4 border-t pt-2 flex justify-end">
+                <button onclick="closeSubModal()" class="bg-gray-300 text-gray-800 text-xs font-bold px-4 py-2 rounded">Kembali</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isManualEditing = false;
+        let adakahNamaYangKurang = false; 
+
+        const defaultCowo9 = ["Alfatih", "Bara", "Putra", "Rafka", "Farshad", "Gilang", "Nugie", "Zarren", "Akhtar", "Farid", "Raja", "Athallah", "Faeyza", "Fakhrie"];
+        const defaultCewe9 = ["Adel", "Jeyhan", "Lotta", "Ziba", "Alzena", "Gendis", "Nabila", "Queena", "Aleyza", "Salma", "Zivana", "Janneta", "Quinnara", "Farah", "Kayyisah"];
+        const defaultCowo78 = ["Leonel", "Arsyad", "Alaric", "Drean", "Zabian", "Azka", "Kazio", "Firas", "Fathan", "Mikhail"];
+        const defaultCewe78 = ["Mikaila", "Tasya", "Aisha", "Falisha", "Athaya", "Thalita", "Calista", "Chalisya", "Hana", "Cantika", "Raisya"];
+        const defaultTadarus = [...defaultCowo9, ...defaultCowo78];
+
+        const listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const namaHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+
+        let advState = {
+            hari: [true, true, true, true, true],
+            jd: { 1: [true,true,true], 2: [true,true,true], 3: [true,true,true], 4: [true,true,true], 5: [true,true,true] },
+            jl: { 1: [true,true,true,true], 2: [true,true,true,true], 3: [true,true,true,true], 4: [true,true,true,true], 5: [true,true,true,true] },
+            tw: { 1: [true,true,true,true], 2: [true,true,true,true], 3: [true,true,true,true], 4: [true,true,true,true], 5: [true,true,true,true] }
+        };
+        let activeSubMenuType = ''; 
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initDropdownBulan(); hitungTanggalOtomatisMingguIni(); loadConfig(true); setupDynamicHeaderListeners();
+            setTimeout(() => { triggerFadeOut(); }, 3000);
+        });
+
+        function triggerFadeOut() {
+            const splash = document.getElementById('splashScreen');
+            if(splash) { splash.classList.add('fade-out-splash'); setTimeout(() => { splash.remove(); }, 1500); }
+        }
+
+        function initDropdownBulan() {
+            const b1 = document.getElementById('paramB1'), b2 = document.getElementById('paramB2');
+            listBulan.forEach((bln) => {
+                b1.appendChild(new Option(bln, bln)); b2.appendChild(new Option(bln, bln));
+            });
+        }
+
+        function hitungTanggalOtomatisMingguIni() {
+            let h = new Date(); let diff = h.getDay() === 0 ? 1 : (h.getDay() === 6 ? 2 : 1 - h.getDay());
+            let d1 = new Date(h); d1.setDate(h.getDate() + diff);
+            let d2 = new Date(d1); d2.setDate(d1.getDate() + 4);
+            document.getElementById('paramT1').value = d1.getDate(); document.getElementById('paramB1').value = listBulan[d1.getMonth()];
+            document.getElementById('paramT2').value = d2.getDate(); document.getElementById('paramB2').value = listBulan[d2.getMonth()];
+        }
+
+        function setupDynamicHeaderListeners() {
+            const updateJudul = () => {
+                let t1 = document.getElementById('paramT1').value, b1 = document.getElementById('paramB1').value;
+                let t2 = document.getElementById('paramT2').value, b2 = document.getElementById('paramB2').value;
+                document.getElementById('judulTabel').innerText = (b1 !== b2) ? `JADWAL KEAGAMAAN ( ${t1} ${b1} - ${t2} ${b2} )` : `JADWAL KEAGAMAAN ( ${t1} - ${t2} ${b1} )`;
+            };
+            ['paramT1','paramB1','paramT2','paramB2'].forEach(id => document.getElementById(id).addEventListener('change', updateJudul));
+            updateJudul();
+        }
+
+        function exportTabelKePNG() {
+            if (isManualEditing) toggleEditJadwalManual();
+            alert("Sedang memproses, mohon tunggu...");
+            html2canvas(document.getElementById('areaExportTabel'), { scale: 2, useCORS: true, backgroundColor: null }).then(c => {
+                let a = document.createElement('a'); a.download = `Jadwal_Askar_${document.getElementById('paramT1').value}.png`; a.href = c.toDataURL('image/png'); a.click();
+            });
+        }
+
+        function toggleEditJadwalManual() {
+            const cells = document.querySelectorAll('.cell-nama-target');
+            const btn = document.getElementById('btnEditManual');
+            isManualEditing = !isManualEditing;
+            if (isManualEditing) {
+                btn.innerHTML = "💾 Simpan Hasil Edit"; btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md animate-pulse";
+                cells.forEach(c => { if (!c.classList.contains('disabled-cell')) { c.contentEditable = "true"; c.classList.add('editable-mode'); } });
+            } else {
+                btn.innerHTML = "✏️ Edit Manual"; btn.className = "bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md";
+                cells.forEach(c => { c.contentEditable = "false"; c.classList.remove('editable-mode'); });
+                alert("Perubahan manual berhasil disimpan ke tabel!");
+            }
+        }
+
+        function getLines(id) { return document.getElementById(id).value.split('\n').map(n => n.trim()).filter(n => n.length > 0); }
+        
+        function loadConfig(silent = false) {
+            const saved = localStorage.getItem('satgas_adab_config_v4');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('inputCowo9').value = data.cowo9 || '';
+                document.getElementById('inputCewe9').value = data.cewe9 || '';
+                document.getElementById('inputCowo78').value = data.cowo78 || '';
+                document.getElementById('inputCewe78').value = data.cewe78 || '';
+                document.getElementById('inputTadarus').value = data.tadarus || '';
+                if (data.advState) advState = data.advState;
+                if (data.pjTikfal) {
+                    ['Senin','Selasa','Rabu','Kamis','Jumat'].forEach(d => {
+                        document.getElementById(`pjTikfal${d}`).value = data.pjTikfal[d.toLowerCase()] || "";
+                    });
+                }
+            } else {
+                document.getElementById('inputCowo9').value = defaultCowo9.join('\n');
+                document.getElementById('inputCewe9').value = defaultCewe9.join('\n');
+                document.getElementById('inputCowo78').value = defaultCowo78.join('\n');
+                document.getElementById('inputCewe78').value = defaultCewe78.join('\n');
+                document.getElementById('inputTadarus').value = defaultTadarus.join('\n');
+            }
+            if (!silent && saved) alert('Config Dimuat!');
+        }
+
+        // ==========================================
+        // ADVANCED TOOLS CONTROLLER
+        // ==========================================
+        function openAdvancedTools() { document.getElementById('advMainModal').classList.remove('hidden'); }
+        function closeAdvancedTools() { document.getElementById('advMainModal').classList.add('hidden'); }
+
+        function openSubModal(type) {
+            activeSubMenuType = type;
+            document.getElementById('advMainModal').classList.add('hidden');
+            document.getElementById('advSubModal').classList.remove('hidden');
+            const titleEl = document.getElementById('advSubTitle');
+            const contentEl = document.getElementById('advSubContent');
+            contentEl.innerHTML = '';
+
+            if (type === 'hari') {
+                titleEl.innerText = "Pengaturan Hari Aktif";
+                namaHari.forEach((h, idx) => {
+                    let checked = advState.hari[idx] ? 'checked' : '';
+                    contentEl.innerHTML += `<label class="flex items-center gap-3 p-2 border-b cursor-pointer hover:bg-slate-50"><input type="checkbox" data-hari="${idx}" ${checked} class="w-4 h-4 text-indigo-600 rounded"> <span class="font-bold text-gray-700">${h}</span></label>`;
+                });
+            } else if (['jd', 'jl', 'tw'].includes(type)) {
+                let labelMap = { jd: 'Jaga Dalam (JD)', jl: 'Jaga Luar (JL)', tw: 'Tempat Wudhu (TW)' };
+                titleEl.innerText = `Pengaturan Slot ${labelMap[type]}`;
+                namaHari.forEach((h, hIdx) => {
+                    let dayNum = hIdx + 1;
+                    contentEl.innerHTML += `<div class="mb-4 border p-3 rounded-lg bg-slate-50"><div class="font-bold text-indigo-900 mb-2">${h}</div><div class="grid grid-cols-2 gap-2" id="subgrid-${type}-${dayNum}"></div></div>`;
+                    let subgrid = document.getElementById(`subgrid-${type}-${dayNum}`);
+                    advState[type][dayNum].forEach((val, sIdx) => {
+                        let checked = val ? 'checked' : '';
+                        subgrid.innerHTML += `<label class="flex items-center gap-2 text-xs cursor-pointer"><input type="checkbox" data-type="${type}" data-day="${dayNum}" data-slot="${sIdx}" ${checked} class="rounded"> Slot ${sIdx+1}</label>`;
+                    });
+                });
+            }
+        }
+
+        function saveSubModal() {
+            if (activeSubMenuType === 'hari') {
+                document.querySelectorAll('#advSubContent input[type="checkbox"]').forEach(el => {
+                    let hIdx = parseInt(el.getAttribute('data-hari'));
+                    advState.hari[hIdx] = el.checked;
+                    let hName = namaHari[hIdx];
+                    let hdrCol = document.getElementById(`hdr-col-${hIdx}`);
+                    let hdrAsk = document.getElementById(`hdr-ask-${hIdx}`);
+                    if(hdrCol) hdrCol.innerText = hName;
+                    if(hdrAsk) hdrAsk.innerText = hName;
+                });
+            } else if (['jd', 'jl', 'tw'].includes(activeSubMenuType)) {
+                document.querySelectorAll('#advSubContent input[type="checkbox"]').forEach(el => {
+                    let type = el.getAttribute('data-type');
+                    let day = el.getAttribute('data-day');
+                    let slot = el.getAttribute('data-slot');
+                    advState[type][day][slot] = el.checked;
+                });
+            }
+            document.getElementById('advSubModal').classList.add('hidden');
+            alert('Pengaturan Berhasil Disimpan!');
+        }
+        function closeSubModal() { document.getElementById('advSubModal').classList.add('hidden'); document.getElementById('advMainModal').classList.remove('hidden'); }
+
+        // ==========================================
+        // SISTEM JUMAL KEEPER
+        // ==========================================
+        let currentJumalPairs = [];
+
+        function bukaModalJumal() {
+            document.getElementById('modalJumal').classList.remove('hidden');
+            if (currentJumalPairs.length === 0) initJumalPairs();
+            renderJumalPairs();
+        }
+
+        function getDuaNamaRandom(pool) {
+            let shuf = [...pool].sort(() => 0.5 - Math.random());
+            if(shuf.length < 2) return ["", ""];
+            return [shuf[0], shuf[1]];
+        }
+
+        function initJumalPairs() {
+            let poolCowo = [...getLines('inputCowo9'), ...getLines('inputCowo78')];
+            let poolCewe = [...getLines('inputCewe9'), ...getLines('inputCewe78')];
+            currentJumalPairs = [];
+            for (let i = 0; i < 5; i++) currentJumalPairs.push({ id: `cowo-${i}`, type: 'cowo', names: getDuaNamaRandom(poolCowo), kept: false });
+            for (let i = 0; i < 5; i++) currentJumalPairs.push({ id: `cewe-${i}`, type: 'cewe', names: getDuaNamaRandom(poolCewe), kept: false });
+        }
+
+        function acakUlangJumal() {
+            let poolCowo = [...getLines('inputCowo9'), ...getLines('inputCowo78')];
+            let poolCewe = [...getLines('inputCewe9'), ...getLines('inputCewe78')];
+            currentJumalPairs.forEach(p => {
+                if (!p.kept) p.names = p.type === 'cowo' ? getDuaNamaRandom(poolCowo) : getDuaNamaRandom(poolCewe);
+            });
+            renderJumalPairs();
+        }
+
+        function toggleKeepJumal(id) {
+            let p = currentJumalPairs.find(x => x.id === id);
+            if (p) { p.kept = !p.kept; renderJumalPairs(); }
+        }
+
+        function renderJumalPairs() {
+            const grid = document.getElementById('jumalGrid'); grid.innerHTML = '';
+            currentJumalPairs.forEach(p => {
+                let bgClass = p.kept ? 'bg-blue-500 text-white border-blue-600 shadow-inner' : 'bg-gray-50 text-gray-800 border-gray-300 hover:bg-gray-100';
+                let displayText = (p.names[0] || p.names[1]) ? `${p.names[0]} & ${p.names[1]}` : 'Kosong';
+                grid.innerHTML += `<div onclick="toggleKeepJumal('${p.id}')" class="${bgClass} border-2 rounded-lg p-3 text-center cursor-pointer transition select-none font-bold text-sm shadow-sm">${displayText}</div>`;
+            });
+        }
+
+        function simpanPasanganJumal() {
+            document.getElementById('modalJumal').classList.add('hidden');
+            let html = '<option value="auto">Auto Generate (Smart)</option>';
+            currentJumalPairs.forEach((p, idx) => {
+                html += `<option value="${idx}">${p.names[0]} & ${p.names[1]} (${p.type === 'cowo' ? 'L' : 'P'})</option>`;
+            });
+            ['jumalK9','jumalK8','jumalK7'].forEach(id => document.getElementById(id).innerHTML = html);
+        }
+
+        // ==========================================
+        // SMART TRACKER (REVISI: MAX 4X SEMINGGU, MAX 2X SEHARI, NO DOBEL KATEGORI DI HARI YANG SAMA)
+        // ==========================================
+        let tracker = { weekCount: {}, dayCount: {0:{},1:{},2:{},3:{},4:{}}, dayCategories: {0:{},1:{},2:{},3:{},4:{}} };
+
+        function resetTracker() { tracker = { weekCount: {}, dayCount: {0:{},1:{},2:{},3:{},4:{}}, dayCategories: {0:{},1:{},2:{},3:{},4:{}} }; }
+
+        function canAssign(nama, dayIdx, category) {
+            if (!nama || nama === "") return false;
+            // Maksimal 4 kali bertugas dalam seminggu
+            if ((tracker.weekCount[nama] || 0) >= 4) return false;
+            // Maksimal 2 kali bertugas dalam sehari
+            if ((tracker.dayCount[dayIdx][nama] || 0) >= 2) return false;
+            // Haram / tidak boleh bertugas dua kali di kategori yang SAMA pada hari yang SAMA
+            if (tracker.dayCategories[dayIdx][category] && tracker.dayCategories[dayIdx][category].includes(nama)) return false;
+            return true;
+        }
+
+        function assignNama(nama, dayIdx, category) {
+            if (!nama || nama === "") return;
+            tracker.weekCount[nama] = (tracker.weekCount[nama] || 0) + 1;
+            tracker.dayCount[dayIdx][nama] = (tracker.dayCount[dayIdx][nama] || 0) + 1;
+            if (!tracker.dayCategories[dayIdx][category]) tracker.dayCategories[dayIdx][category] = [];
+            tracker.dayCategories[dayIdx][category].push(nama);
+        }
+
+        function getNamaUnikDinamis(pool, dayIdx, category) {
+            let validCandidates = pool.filter(name => canAssign(name, dayIdx, category));
+            if (validCandidates.length === 0) {
+                adakahNamaYangKurang = true; return "";
+            }
+
+            // Prioritaskan yang tugas minggunya masih di bawah 2 agar minimal tercapai 2x
+            let tier1 = validCandidates.filter(name => (tracker.weekCount[name] || 0) < 2);
+            let tier2 = validCandidates.filter(name => (tracker.weekCount[name] || 0) >= 2);
+
+            tier1.sort(() => 0.5 - Math.random());
+            tier2.sort(() => 0.5 - Math.random());
+
+            let chosen = [...tier1, ...tier2][0];
+            assignNama(chosen, dayIdx, category);
+            return chosen;
+        }
+
+        // ==========================================
+        // PROSES INTI (LANGSUNG EKSEKUSI TANPA POPUP)
+        // ==========================================
+        function prosesSistemPintar() {
+            if (isManualEditing) toggleEditJadwalManual();
+            
+            const cowo9 = getLines('inputCowo9'), cewe9 = getLines('inputCewe9');
+            const cowo78 = getLines('inputCowo78'), cewe78 = getLines('inputCewe78');
+            const masterCowo = [...cowo9, ...cowo78], masterCewe = [...cewe9, ...cewe78];
+            const masterTadarus = getLines('inputTadarus');
+
+            if (!masterCowo.length || !masterCewe.length) { alert('Pool nama Cowo dan Cewe tidak boleh kosong!'); return; }
+
+            adakahNamaYangKurang = false; resetTracker();
+
+            const renderSel = (cellId, textValue, isDisabled = false) => {
+                let el = document.getElementById(cellId);
+                if (el) {
+                    if (isDisabled) {
+                        el.innerText = ""; el.classList.add('disabled-cell');
+                    } else {
+                        el.innerText = textValue || ""; el.classList.remove('disabled-cell');
+                    }
+                }
+            };
+
+            let usedJumalIdx = [];
+            const prosesDropdownJumal = (dropId, c1, c2, poolKategori) => {
+                let sel = document.getElementById(dropId).value;
+                let n1 = "", n2 = "";
+                if (advState.hari[4]) {
+                    if (sel !== 'auto' && currentJumalPairs[sel] && !usedJumalIdx.includes(sel)) {
+                        n1 = currentJumalPairs[sel].names[0]; n2 = currentJumalPairs[sel].names[1]; usedJumalIdx.push(sel);
+                    } else {
+                        let genderTarget = Math.random() > 0.5 ? 'cowo' : 'cewe';
+                        let poolRaw = (genderTarget === 'cowo') ? (poolKategori==='K9'?cowo9:cowo78) : (poolKategori==='K9'?cewe9:cewe78);
+                        n1 = getNamaUnikDinamis(poolRaw, 4, 'Jumal'); n2 = getNamaUnikDinamis(poolRaw, 4, 'Jumal');
+                    }
+                    assignNama(n1, 4, 'Jumal'); assignNama(n2, 4, 'Jumal');
+                }
+                renderSel(c1, n1, !advState.hari[4]); renderSel(c2, n2, !advState.hari[4]);
+            };
+
+            prosesDropdownJumal('jumalK9', 't-JM1', 't-JM4', 'K9');
+            prosesDropdownJumal('jumalK8', 't-JM2', 't-JM5', 'K78');
+            prosesDropdownJumal('jumalK7', 't-JM3', 't-JM6', 'K78');
+
+            let shaumSeninCowo = Math.random() > 0.5;
+            let ss1 = advState.hari[0] ? getNamaUnikDinamis(shaumSeninCowo?masterCowo:masterCewe, 0, 'Shaum') : "";
+            let ss2 = advState.hari[0] ? getNamaUnikDinamis(shaumSeninCowo?masterCowo:masterCewe, 0, 'Shaum') : "";
+            renderSel('t-SS1', ss1, !advState.hari[0]); renderSel('t-SS2', ss2, !advState.hari[0]);
+
+            let ss3 = advState.hari[3] ? getNamaUnikDinamis(!shaumSeninCowo?masterCowo:masterCewe, 3, 'Shaum') : "";
+            let ss4 = advState.hari[3] ? getNamaUnikDinamis(!shaumSeninCowo?masterCowo:masterCewe, 3, 'Shaum') : "";
+            renderSel('t-SS3', ss3, !advState.hari[3]); renderSel('t-SS4', ss4, !advState.hari[3]);
+
+            const pjDropdowns = [
+                document.getElementById('pjTikfalSenin').value, document.getElementById('pjTikfalSelasa').value,
+                document.getElementById('pjTikfalRabu').value, document.getElementById('pjTikfalKamis').value, document.getElementById('pjTikfalJumat').value
+            ];
+
+            let annGender = 'cowo';
+            let patroli3L = true;
+
+            for (let day = 0; day < 5; day++) {
+                let dNum = day + 1;
+                let activeDay = advState.hari[day];
+
+                let pjGender = pjDropdowns[day] || (Math.random() > 0.5 ? 'L' : 'P'); 
+                if (pjGender === 'L') {
+                    renderSel(`t-PT${dNum}`, activeDay ? getNamaUnikDinamis(cowo9, day, 'Tikfal') : "", !activeDay); 
+                    renderSel(`t-PT${dNum+5}`, "", !activeDay);
+                } else {
+                    renderSel(`t-PT${dNum}`, "", !activeDay); 
+                    renderSel(`t-PT${dNum+5}`, activeDay ? getNamaUnikDinamis(cewe9, day, 'Tikfal') : "", !activeDay);
+                }
+
+                renderSel(`t-TF${dNum}`, activeDay ? getNamaUnikDinamis(cowo9, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-1`, activeDay ? getNamaUnikDinamis(cowo9, day, 'Tikfal') : "", !activeDay);
+                renderSel(`t-TF${dNum}-5`, activeDay ? getNamaUnikDinamis(cewe9, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-6`, activeDay ? getNamaUnikDinamis(cewe9, day, 'Tikfal') : "", !activeDay);
+                
+                renderSel(`t-TF${dNum}-2`, activeDay ? getNamaUnikDinamis(cowo78, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-3`, activeDay ? getNamaUnikDinamis(cowo78, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-4`, activeDay ? getNamaUnikDinamis(cowo78, day, 'Tikfal') : "", !activeDay);
+                renderSel(`t-TF${dNum}-7`, activeDay ? getNamaUnikDinamis(cewe78, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-8`, activeDay ? getNamaUnikDinamis(cewe78, day, 'Tikfal') : "", !activeDay); 
+                renderSel(`t-TF${dNum}-9`, activeDay ? getNamaUnikDinamis(cewe78, day, 'Tikfal') : "", !activeDay);
+
+                renderSel(`t-PJ${dNum}`, activeDay ? getNamaUnikDinamis(cowo9, day, 'Askar') : "", !activeDay);
+
+                // Jaga Dalam
+                let jdSlots = advState.jd[dNum];
+                renderSel(`t-JD${dNum}`, (activeDay && jdSlots[0]) ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "", !activeDay || !jdSlots[0]);
+                renderSel(`t-JD${dNum}-1`, (activeDay && jdSlots[1]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !jdSlots[1]);
+                renderSel(`t-JD${dNum}-2`, (activeDay && jdSlots[2]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !jdSlots[2]);
+
+                // Jaga Luar
+                let jlSlots = advState.jl[dNum];
+                renderSel(`t-JL${dNum}`, (activeDay && jlSlots[0]) ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "", !activeDay || !jlSlots[0]);
+                renderSel(`t-JL${dNum}-1`, (activeDay && jlSlots[1]) ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "", !activeDay || !jlSlots[1]);
+                renderSel(`t-JL${dNum}-2`, (activeDay && jlSlots[2]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !jlSlots[2]);
+                renderSel(`t-JL${dNum}-3`, (activeDay && jlSlots[3]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !jlSlots[3]);
+
+                // Tempat Wudhu
+                let twSlots = advState.tw[dNum];
+                renderSel(`t-TW${dNum}`, (activeDay && twSlots[0]) ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "", !activeDay || !twSlots[0]);
+                renderSel(`t-TW${dNum}-1`, (activeDay && twSlots[1]) ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "", !activeDay || !twSlots[1]);
+                renderSel(`t-TW${dNum}-2`, (activeDay && twSlots[2]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !twSlots[2]);
+                renderSel(`t-TW${dNum}-3`, (activeDay && twSlots[3]) ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "", !activeDay || !twSlots[3]);
+
+                renderSel(`t-TD${dNum}`, activeDay ? getNamaUnikDinamis(masterTadarus, day, 'Lainnya') : "", !activeDay);
+
+                renderSel(`t-A${dNum}`, activeDay ? getNamaUnikDinamis(annGender==='cowo'?masterCowo:masterCewe, day, 'Lainnya') : "", !activeDay);
+                annGender = (annGender === 'cowo') ? 'cewe' : 'cowo';
+
+                let pCowo = patroli3L ? 3 : 2; let pCewe = 5 - pCowo;
+                let patMembers = [];
+                for(let i=0; i<pCowo; i++) patMembers.push(activeDay ? getNamaUnikDinamis(masterCowo, day, 'Askar') : "");
+                for(let i=0; i<pCewe; i++) patMembers.push(activeDay ? getNamaUnikDinamis(masterCewe, day, 'Askar') : "");
+                let subVars = ['', '-1', '-2', '-3', '-4'];
+                for(let j=0; j<5; j++) renderSel(`t-P${dNum}${subVars[j]}`, patMembers[j], !activeDay);
+                patroli3L = !patroli3L;
+            }
+
+            if (adakahNamaYangKurang) alert("⚠️ Peringatan: Ada slot kosong karena jumlah nama di pool kurang untuk memenuhi aturan batas maksimal/minimal tugas. Silakan tambah daftar nama!");
+            else alert('Yang Bikin Sistem Orangnya Ganteng, Btw Udah Dipilihin Tuh');
+        }
+
+        function resetJadwal() { document.querySelectorAll('.cell-nama-target').forEach(c => { c.innerText = ""; c.classList.remove('disabled-cell'); }); alert('Tabel dikosongkan!'); }
+    </script>
+</body>
+</html>
