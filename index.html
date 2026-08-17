@@ -84,6 +84,46 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans pb-24">
 
+<!-- AUDIO BACKSOUND MARSYPI -->
+<audio id="marsypiAudio" src="https://cdn.jsdelivr.net/gh/hajitazu/dashsekbid@main/audio/marsypi.mp3" preload="auto"></audio>
+
+<!-- SCRIPT GABUNGAN -->
+<script>
+    const marsypiAudio = document.getElementById('marsypiAudio');
+    const splashLogo = document.getElementById('splashLogo');
+    const splashScreen = document.getElementById('splashScreen');
+
+    let isAudioPlayed = false;
+
+    function playAudioAndHideSplash() {
+        if (isAudioPlayed) return;
+        isAudioPlayed = true;
+
+        marsypiAudio.volume = 0.3; // Volume 30%
+        marsypiAudio.play().catch(error => {
+            console.log("Autoplay dicegah browser:", error);
+        });
+
+        if (splashScreen) {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+            }, 500);
+        }
+    }
+
+    // Trigger 1: Logo ditekan
+    if (splashLogo) {
+        splashLogo.addEventListener('click', playAudioAndHideSplash);
+    }
+
+    // Trigger 2: Animasi selesai
+    if (splashScreen) {
+        splashScreen.addEventListener('animationend', playAudioAndHideSplash);
+    }
+</script>
+
+
     <div id="splashScreen" onclick="triggerFadeOut()">
         <img src="https://s6.imgcdn.dev/YXOXNo.jpg" alt="Logo" class="fade-in-up-logo max-w-xs sm:max-w-sm h-auto">
     </div>
@@ -464,12 +504,28 @@
             initDropdownPjTikfal();
             initTikfalPairs();
             setTikfalMode('pilih'); // Set default mode ke 'pilih'
+            
+            // Timeout otomatis jika splash screen tidak diklik dalam 3 detik (animasi selesai)
             setTimeout(() => { triggerFadeOut(); }, 3000);
         });
 
+        function playMarsypiAudio() {
+            const audio = document.getElementById('marsypiAudio');
+            if (audio) {
+                audio.volume = 0.3; // Set volume ke 30%
+                audio.play().catch(e => {
+                    console.log("Autoplay dibatasi oleh browser:", e);
+                });
+            }
+        }
+
         function triggerFadeOut() {
+            playMarsypiAudio(); // Mainkan audio saat logo ditekan / animasi selesai
             const splash = document.getElementById('splashScreen');
-            if(splash) { splash.classList.add('fade-out-splash'); setTimeout(() => { splash.remove(); }, 1500); }
+            if(splash) { 
+                splash.classList.add('fade-out-splash'); 
+                setTimeout(() => { splash.remove(); }, 1500); 
+            }
         }
 
         function initDropdownBulan() {
@@ -958,7 +1014,7 @@
             }
 
             if (adakahNamaYangKurang) alert("⚠️ Peringatan: Ada slot kosong karena jumlah nama di pool kurang untuk memenuhi aturan batas maksimal/minimal tugas. Silakan tambah daftar nama!");
-            else alert('⚡ Sistem Pemilihan Berhasil, Hatur Nuhun...');
+            else alert('⚡ Pemilihan Berhasil, Hatur Nuhun Semangat Nugasnya!!...');
         }
 
         function resetJadwal() { document.querySelectorAll('.cell-nama-target').forEach(c => { c.innerText = ""; c.classList.remove('disabled-cell'); }); alert('Tabel dikosongkan!'); }
